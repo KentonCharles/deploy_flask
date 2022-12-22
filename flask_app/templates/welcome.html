@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Welcome</title>
+</head>
+<body>
+    <div class="d-flex justify-content-between" style="background-color: #087e82; height: 250px">
+        <img src="{{ url_for('static', filename='images/Truckalicious_logo.png') }}" alt="truckalicious_logo" style="margin-left:35px; margin-top:35px; height:200px;">
+        <div class="align-middle" style="margin-right:35px; margin-top:35px;">
+            <h2 style="color:white;">Welcome {{logged_user.first_name}}!</h2>
+            <a href="/trucks/new" class="btn btn-danger">Create New Post</a>
+            <a href="/users/logout" class="btn btn-light">LogOut</a>
+        </div>
+    </div>
+    <div class="container" style="margin-top:25px;">
+        <h4>All Food Truck Posts</h4>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Cuisine</td>
+                    <td>Posted By</td>
+                    <td>Rating</td>
+                    <td>Price</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for one_truck in all_trucks %}
+                <tr>
+                    <td>{{one_truck.name}}</td>
+                    <td>{{one_truck.cuisine}}</td>
+                    <td>{{one_truck.visitor.first_name}}</td>
+                    <td>{{one_truck.rating}}</td>
+                    <td>{{one_truck.price}}</td>
+                    <td>
+                        <a href="/trucks/{{one_truck.id}}/view">View Post </a>
+                        {% if one_truck.user_id == session['user_id']%}
+                        | <a href="/trucks/{{one_truck.id}}/edit">Edit</a>
+                        | <a href="/trucks/{{one_truck.id}}/delete">Delete</a>
+                        {%endif%}
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        
+    </div>
+    
+</body>
+</html>
